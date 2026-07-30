@@ -1,39 +1,70 @@
 // handles HTTP resquest / response
 import { Request, Response } from "express";
-import { registerSchema } from "../validators/auth.validator.js";
-import { registerUser } from "../services/auth.service.js";
+import { registerSchema, loginSchema } from "../validators/auth.validator.js";
+import { registerUser, loginUser } from "../services/auth.service.js";
+import asyncHandler from "../utils/asyncHandler.js";
+import { getCurrentUser } from "../services/auth.service.js";
+import { toUserResponse } from "../utils/user.mapper.js";
+import { setAuthCookie, clearAuthCookie } from "../utils/cookie.js";
+import { successResponse } from "../utils/apiResponse.js";
 
-export const register = async (req: Request, res: Response) => {
-  try {
-    const validatedData = registerSchema.parse(req.body);
 
-    const user = await registerUser(
-      validatedData.name,
-      validatedData.email,
-      validatedData.password
-    );
 
-    res.status(201).json({
-      success: true,
-      message: "User registered successfully",
-      data: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-      },
-    });
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      res.status(400).json({
-        success: false,
-        message: error.message,
-      });
-      return;
+export const register = asyncHandler(async (req: Request, res: Response) => {
+  const validatedData = registerSchema.parse(req.body);
+
+  const {user, token} = await registerUser(
+    validatedData.name,
+    validatedData.email,
+    validatedData.password
+  );
+
+  setAuthCookie(res, token);
+  successResponse({
+    res,
+    statusCode: 201,
+    message: "User registered successful",
+    data: {
+      user: toUserResponse(user),
+    },
+  });
+});
+
+export const login = asyncHandler(async (req: Request, res: Response) => {
+  const validatedData = loginSchema.parse(req.body);
+
+  const { user, token } = await loginUser(
+    validatedData.email,
+    validatedData.password
+  );
+
+  setAuthCookie(res, token);
+  successResponse({
+    res,
+    message: "Login successful",
+    data: {
+      user: toUserResponse(user),
+    },
+  });
+});
+
+export const me = asyncHandler(async (req: Request, res: Response) => {
+  const user = await getCurrentUser(req.user!._id.toString());
+
+  successResponse({
+    res,
+    message: "Current user fetched successfully",
+    data: {
+      user: toUserResponse(user),
     }
+  });
+});
 
-    res.status(500).json({
-      success: false,
-      message: "Internal server error",
-    });
-  }
-};
+export const logout = asyncHandler(async (_, res) => {
+  clearAuthCookie(res);
+
+  successResponse({
+    res,
+    message: "Logged out successfully",
+  });
+});

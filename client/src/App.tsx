@@ -1,11 +1,18 @@
+import { useEffect } from "react";
+import AppRoutes from "./routes/AppRoutes";
+import { useAuthStore } from "./store/auth.store";
+
 function App() {
-  return(
-    <div className="flex min-h-screen items-center justify-center bg-slate-100">
-      <h1 className="text-5xl font-bold text-blue-600">
-        FinSight 🚀
-      </h1>
-    </div>
-  )
+  const fetchCurrentUser =
+    useAuthStore(
+      (state) => state.fetchCurrentUser
+    );
+
+  useEffect(() => {
+    fetchCurrentUser();
+  }, [fetchCurrentUser]);
+
+  return <AppRoutes />;
 }
 
 export default App;

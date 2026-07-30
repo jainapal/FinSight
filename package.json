@@ -1,0 +1,16 @@
+{
+  "name": "finsight",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev": "echo \"Configure after apps are created\"",
+    "build": "echo \"Build all apps\"",
+    "lint": "echo \"Lint all apps\"",
+    "format": "prettier --write ."
+  }
+}
