@@ -24,7 +24,7 @@ const Footer = () => {
           {/* Brand */}
           <div className="lg:col-span-2">
             <h2 className="text-2xl font-bold text-slate-900">
-              FinSight AI
+            📊 FinSight AI
             </h2>
 
             <p className="mt-4 max-w-md leading-7 text-slate-600">
@@ -35,21 +35,21 @@ const Footer = () => {
             <div className="mt-6 flex gap-4">
               <a
                 href="https://linkedin.com/in/yourusername"
-                className="rounded-lg border border-slate-200 p-2 transition hover:bg-slate-100"
+                className="rounded-lg border border-slate-200 p-2 text-sm text-slate-500 hover:bg-slate-400 transition-colors"
               >
                 Github
               </a>
 
               <a
                 href="https://linkedin.com/in/yourusername"
-                className="rounded-lg border border-slate-200 p-2 transition hover:bg-slate-100"
+                className="rounded-lg border border-slate-200 p-2 text-sm text-slate-500 hover:bg-slate-400 transition-colors"
               >
                 Linkedln
               </a>
 
               <a
                 href="#"
-                className="rounded-lg border border-slate-200 p-2 transition hover:bg-slate-100"
+                className="rounded-lg border border-slate-200 p-2 text-sm text-slate-500 hover:bg-slate-400 transition-colors"
               >
                 Email
               </a>

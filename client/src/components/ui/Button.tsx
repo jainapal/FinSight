@@ -18,7 +18,7 @@ const Button = ({
   return (
     <button
       className={clsx(
-        "inline-flex items-center justify-center rounded-xl font-semibold transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-50",
+        "inline-flex items-center justify-center rounded-xl font-semibold hover:bg-blue-700 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-50",
 
         // Sizes
         {

@@ -1,5 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 import Container from "@/components/ui/Container";
 import Button from "@/components/ui/Button";
@@ -12,7 +13,7 @@ const CTA = () => {
         <div className="absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500/10 blur-3xl" />
       </div>
 
-      <Container className="relative">
+      <Container className="relative mb-12">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -39,10 +40,12 @@ const CTA = () => {
           </p>
 
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <Link to="/Signup">
             <Button size="lg">
               Get Started Free
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
+          </Link>
 
             <Button variant="outline" size="lg">
               View Demo

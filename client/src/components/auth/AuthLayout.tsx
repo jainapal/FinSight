@@ -13,7 +13,7 @@ const AuthLayout = ({
 }: Props) => {
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-100 p-6">
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-lg">
       <div className="mb-8 text-center">
         <h1 className="text-4xl font-bold">
           {title}

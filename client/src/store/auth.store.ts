@@ -6,6 +6,7 @@ interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  error: string | null;
 
   login: (
     email: string,
@@ -21,15 +22,20 @@ interface AuthState {
   logout: () => Promise<void>;
 
   fetchCurrentUser: () => Promise<void>;
+  clearError: () => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   isAuthenticated: false,
   isLoading: false,
+  error: null,
 
   async login(email, password) {
-    set({ isLoading: true });
+    set({ 
+      isLoading: true ,
+      error: null,
+    });
   
     try {
       const response = await authService.login({
@@ -40,11 +46,13 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({
         user: response.data.data.user,
         isAuthenticated: true,
+        error: null,
       });
     } catch (error) {
       set({
         user: null,
         isAuthenticated: false,
+        error: "Invalid email or password",
       });
   
       throw error;
@@ -56,7 +64,10 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   async register(name, email, password) {
-    set({ isLoading: true });
+    set({ 
+      isLoading: true ,
+      error: null,
+    });
   
     try {
       const response = await authService.register({
@@ -68,11 +79,13 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({
         user: response.data.data.user,
         isAuthenticated: true,
+        error: null,
       });
     } catch (error) {
       set({
         user: null,
         isAuthenticated: false,
+        error: "Something went wrong",
       });
   
       throw error;
@@ -84,27 +97,46 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   async logout() {
-    await authService.logout();
+    try{
+      await authService.logout();
+    } finally{
+      set({
+        user: null,
+        isAuthenticated: false,
+        error: null,
+      });
+    }
 
-    set({
-      user: null,
-      isAuthenticated: false,
-    });
+    
   },
 
   async fetchCurrentUser() {
+    set({
+      isLoading: true,
+    });
     try {
       const response = await authService.getCurrentUser();
 
       set({
         user: response.data.data.user,
         isAuthenticated: true,
+        error: null,
       });
     } catch {
       set({
         user: null,
         isAuthenticated: false,
       });
+    } finally {
+      set({
+        isLoading: false,
+      });
     }
+  },
+
+  clearError() {
+    set({
+      error: null,
+    });
   },
 }));

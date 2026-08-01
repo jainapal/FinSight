@@ -32,7 +32,7 @@ const MobileNav = () => {
 
             
               <Link
-              to="/register"
+              to="/Signup"
               onClick={() => setOpen(false)}
               className="rounded-lg bg-blue-600 px-4 py-3 text-center font-medium text-white"
               >
