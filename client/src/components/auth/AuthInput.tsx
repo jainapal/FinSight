@@ -1,12 +1,15 @@
-// src/components/auth/AuthInput.tsx
+import {forwardRef, type InputHTMLAttributes,} from "react";
 
-import type { InputHTMLAttributes } from "react";
-
-interface AuthInputProps extends InputHTMLAttributes<HTMLInputElement> {
+interface AuthInputProps
+  extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
+  error?: string;
 }
 
-const AuthInput = ({ label, ...props }: AuthInputProps) => {
+const AuthInput = forwardRef<
+  HTMLInputElement,
+  AuthInputProps
+>(({ label, error, className = "", ...props }, ref) => {
   return (
     <div className="space-y-2">
       <label className="block text-sm font-medium text-slate-700">
@@ -14,29 +17,38 @@ const AuthInput = ({ label, ...props }: AuthInputProps) => {
       </label>
 
       <input
+        ref={ref}
         {...props}
-        className="
+        className={`
           w-full
           rounded-xl
           border
-          border-slate-300
           bg-white
           px-4
           py-3
           text-slate-900
           outline-none
-          hover:shadow-lg
-          hover:-translate-y-0.5
           placeholder:text-slate-400
-          focus:border-blue-500
-          focus:ring-4
-          focus:ring-blue-500/10
           transition-all
           duration-200
-        "
+          ${
+            error
+              ? "border-red-500 focus:ring-4 focus:ring-red-100"
+              : "border-slate-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+          }
+          ${className}
+        `}
       />
+
+      {error && (
+        <p className="text-sm text-red-500">
+          {error}
+        </p>
+      )}
     </div>
   );
-};
+});
+
+AuthInput.displayName = "AuthInput";
 
 export default AuthInput;
