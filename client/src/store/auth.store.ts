@@ -7,6 +7,7 @@ interface AuthState {
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
+  isInitialised: boolean;
 
   login: (
     email: string,
@@ -29,6 +30,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   isAuthenticated: false,
   isLoading: false,
+  isInitialised: false,
   error: null,
 
   async login(email, password) {
@@ -121,11 +123,13 @@ export const useAuthStore = create<AuthState>((set) => ({
         user: response.data.data.user,
         isAuthenticated: true,
         error: null,
+        isInitialised: true,
       });
     } catch {
       set({
         user: null,
         isAuthenticated: false,
+        isInitialised: true,
       });
     } finally {
       set({
